@@ -33,7 +33,7 @@ class Database:
 
             salary TEXT,
 
-            job_url TEXT,
+            job_url TEXT NOT NULL UNIQUE,
 
             source TEXT,
 

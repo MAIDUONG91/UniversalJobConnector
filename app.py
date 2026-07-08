@@ -1,25 +1,33 @@
+from datetime import datetime
+
 from database.repository import JobRepository
+from models.job import Job
 
 
 def main():
 
     repository = JobRepository()
 
-    print(f"Tổng số Job: {repository.count()}")
+    job = Job(
+        title="HR Executive",
+        company="ABC Company",
+        location="Ho Chi Minh",
+        salary="20,000,000",
+        job_url="https://ABCweb.com/job/1",
+        source="ABC",
+        posted_date="2026-07-08",
+        crawled_at=datetime.now(),
+    )
+
+    repository.save(job)
+
+    repository.save(job)
+
+    repository.save(job)
 
     print()
 
-    for job in repository.get_all():
-
-        print(job["id"])
-
-        print(job["title"])
-
-        print(job["company"])
-
-        print(job["location"])
-
-        print("-" * 50)
+    print(f"Tổng Job: {repository.count()}")
 
     repository.close()
 

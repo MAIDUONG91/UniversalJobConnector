@@ -11,6 +11,11 @@ class JobRepository:
         self.db.create_tables()
 
     def save(self, job: Job):
+        if self.exists(job.job_url):
+
+            print(f"[SKIP] {job.title}")
+
+            return False
 
         cursor = self.db.connection.cursor()
 
@@ -41,6 +46,8 @@ class JobRepository:
         )
 
         self.db.connection.commit()
+        print(f"[SAVE] {job.title}")
+        return True
 
     def exists(self, job_url: str) -> bool:
 
