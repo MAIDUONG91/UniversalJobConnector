@@ -1,36 +1,15 @@
-from datetime import datetime
-
-from database.repository import JobRepository
-from models.job import Job
+from services.excel_reader import ExcelReader
 
 
 def main():
 
-    repository = JobRepository()
+    reader = ExcelReader()
 
-    job = Job(
-        title="HR Executive",
-        company="ABC Company",
-        location="Ho Chi Minh",
-        salary="20,000,000",
-        job_url="https://ABCweb.com/job/1",
-        source="ABC",
-        posted_date="2026-07-08",
-        crawled_at=datetime.now(),
-    )
+    config = reader.load()
 
-    repository.save(job)
-
-    repository.save(job)
-
-    repository.save(job)
-
-    print()
-
-    print(f"Tổng Job: {repository.count()}")
-
-    repository.close()
+    print(config)
 
 
 if __name__ == "__main__":
+
     main()
