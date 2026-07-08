@@ -3,6 +3,7 @@ from datetime import datetime
 from models.job import Job
 from services.excel_reader import ExcelReader
 from services.filter_service import FilterService
+from services.report_service import ReportService
 
 
 def main():
@@ -33,40 +34,24 @@ def main():
             crawled_at=datetime.now(),
         ),
 
-        Job(
-            title="HR Assistant",
-            company="DEF Company",
-            location="Hồ Chí Minh",
-            salary="12000000",
-            job_url="https://ABCweb.com/job/3",
-            source="ABC",
-            posted_date="2026-07-08",
-            crawled_at=datetime.now(),
-        ),
     ]
 
-    service = FilterService()
+    filtered_jobs = FilterService().filter_jobs(
+        jobs,
+        config,
+    )
 
-    result = service.filter_jobs(jobs, config)
+    report = ReportService()
 
-    print(f"Tổng Job ban đầu: {len(jobs)}")
+    excel_file = report.export_excel(filtered_jobs)
 
-    print(f"Job sau khi lọc: {len(result)}")
+    html_file = report.export_html(filtered_jobs)
 
-    print()
+    print("Excel:", excel_file)
 
-    for job in result:
-
-        print(job.title)
-
-        print(job.company)
-
-        print(job.location)
-
-        print(job.salary)
-
-        print("-" * 40)
+    print("HTML :", html_file)
 
 
 if __name__ == "__main__":
+
     main()
