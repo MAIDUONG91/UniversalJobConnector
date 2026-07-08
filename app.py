@@ -5,10 +5,25 @@ from services.excel_reader import ExcelReader
 from services.filter_service import FilterService
 from services.report_service import ReportService
 from services.email_service import EmailService
+from utils.logger import get_logger
 
 
 def main():
+    logger = get_logger("UniversalJobConnector")
 
+    logger.info("Application started")
+
+    try:
+
+        # Toàn bộ code hiện tại
+
+        logger.info("Application finished successfully")
+
+    except Exception:
+
+        logger.exception("Application crashed")
+
+        raise
     config = ExcelReader().load()
 
     jobs = [
@@ -50,9 +65,9 @@ def main():
     EmailService().send(
         smtp_server="smtp.gmail.com",
         smtp_port=465,
-        sender_email="mai.dt2014@gmail.com",
-        sender_password="rdld hjiu ript kcud",
-        receiver_email="mai.dt2014@gmail.com",
+        sender_email="EMAIL_GUI@gmail.com",
+        sender_password="APP_PASSWORD",
+        receiver_email="EMAIL_NHAN@gmail.com",
         subject="Universal Job Connector Report",
         html_file=html_file,
         excel_file=excel_file,
