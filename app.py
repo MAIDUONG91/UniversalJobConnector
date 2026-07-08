@@ -1,5 +1,5 @@
 from __future__ import annotations
-
+import argparse
 from datetime import datetime
 
 from models.job import Job
@@ -96,23 +96,69 @@ def run_job() -> None:
 
     logger.info("========== Job Finished ==========")
 
+def crawl_command():
+    logger.info("CLI: crawl")
+    run_job()
+
+
+def filter_command():
+    logger.info("CLI: filter")
+    run_job()
+
+
+def report_command():
+    logger.info("CLI: report")
+    run_job()
+
+
+def email_command():
+    logger.info("CLI: email")
+    run_job()
 
 def main() -> None:
-    """Khởi động Scheduler."""
 
-    logger.info("Application started.")
-
-    scheduler = SchedulerService()
-
-    scheduler.add_daily_job(
-        settings.SCHEDULE_TIME,
-        run_job,
+    parser = argparse.ArgumentParser(
+        prog="Universal Job Connector",
+        description="Universal Job Connector Framework CLI",
     )
 
-    logger.info("Scheduler is waiting for scheduled jobs...")
+    subparsers = parser.add_subparsers(
+        dest="command",
+    )
 
-    scheduler.start()
+    subparsers.add_parser("crawl")
+    subparsers.add_parser("filter")
+    subparsers.add_parser("report")
+    subparsers.add_parser("email")
+    subparsers.add_parser("run")
+    subparsers.add_parser("schedule")
 
+    args = parser.parse_args()
 
-if __name__ == "__main__":
-    main()
+    command = args.command or "run"
+
+    if command == "crawl":
+        crawl_command()
+
+    elif command == "filter":
+        filter_command()
+
+    elif command == "report":
+        report_command()
+
+    elif command == "email":
+        email_command()
+
+    elif command == "schedule":
+
+        scheduler = SchedulerService()
+
+        scheduler.add_daily_job(
+            settings.SCHEDULE_TIME,
+            run_job,
+        )
+
+        scheduler.start()
+
+    else:
+        run_job()
