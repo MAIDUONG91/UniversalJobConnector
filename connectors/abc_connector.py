@@ -9,7 +9,7 @@ class ABCConnector(BaseConnector):
 
     def __init__(self):
 
-        self.url = "https://ABCweb.com"
+        self.url = "https://www.vietnamworks.com/viec-lam?q=hr&l=29&sorting=lasted"
         self.parser = ABCParser()
         self.client = HttpClient()
 

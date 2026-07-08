@@ -10,7 +10,7 @@ from services.report_service import ReportService
 from services.scheduler_service import SchedulerService
 from utils.logger import get_logger
 from config.settings import settings
-
+from connectors.abc_connector import ABCConnector
 
 logger = get_logger("UniversalJobConnector")
 
@@ -24,34 +24,9 @@ def run_job() -> None:
         # Đọc cấu hình bộ lọc từ Excel
         config = ExcelReader().load()
 
-        # ------------------------------------------------------------------
-        # Tạm thời dùng dữ liệu mẫu.
-        # Sau này sẽ thay bằng:
-        # jobs = ABCConnector().crawl()
-        # ------------------------------------------------------------------
-        jobs = [
-            Job(
-                title="HR Executive",
-                company="ABC Company",
-                location="Hồ Chí Minh",
-                salary="20000000",
-                job_url="https://ABCweb.com/job/1",
-                source="ABC",
-                posted_date="2026-07-08",
-                crawled_at=datetime.now(),
-            ),
-            Job(
-                title="Python Developer",
-                company="XYZ Company",
-                location="Đà Nẵng",
-                salary="35000000",
-                job_url="https://ABCweb.com/job/2",
-                source="ABC",
-                posted_date="2026-07-08",
-                crawled_at=datetime.now(),
-            ),
-        ]
-
+        # Lấy dữ liệu từ website ABCWeb
+        jobs = ABCConnector().crawl()
+        
         logger.info("Loaded %s jobs.", len(jobs))
 
         # Lọc dữ liệu

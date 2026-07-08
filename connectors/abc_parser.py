@@ -1,17 +1,29 @@
-from __future__ import annotations
+from bs4 import BeautifulSoup
 
-from utils.parser import BaseParser
 from models.job import Job
 
 
-class ABCParser(BaseParser):
+class ABCParser:
 
-    def parse(self, raw_data: str) -> list[Job]:
+    def parse(self, html):
 
-        print("Parser đang xử lý dữ liệu...")
+        soup = BeautifulSoup(html, "html.parser")
 
-        # Version 1.4:
-        # Chưa parse HTML thật.
-        # Chỉ trả về danh sách rỗng.
+        jobs = []
 
-        return []
+        for item in soup.select(".job-item"):
+
+            jobs.append(
+                Job(
+                    title=item.select_one(".title").text.strip(),
+                    company=item.select_one(".company").text.strip(),
+                    location=item.select_one(".location").text.strip(),
+                    salary=item.select_one(".salary").text.strip(),
+                    job_url=item.select_one("a")["href"],
+                    source="ABC",
+                    posted_date="",
+                    crawled_at=datetime.now(),
+                )
+            )
+
+        return jobs
